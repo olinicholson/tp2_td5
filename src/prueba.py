@@ -236,7 +236,7 @@ if __name__ == "__main__":
 
 	#---- Dataset Toy --------------
 	print('Dataset Toy')
-	main_modelado_cost_min("instances/toy_instance.json")
+	main_modelado_circulacion()
 	#-------------------------------
 	''' 
 	#---- Dataset Real -------

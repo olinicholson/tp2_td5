@@ -4,7 +4,7 @@ import json
 import math
 
 # Cargar datos del JSON
-with open("instances/toy_instance.json", "r") as file:
+with open("instances/retiro-tigre-semana.json", "r") as file:
     data = json.load(file)
 
 # Crear el grafo dirigido
@@ -21,55 +21,55 @@ for service_id, service in data["services"].items():
     stops = service["stops"]
     demand = service["demand"][0]
 
-    # Crear nodos para los eventos
+    # Crear nodos para los eventos con demanda positiva o negativa según el tipo
     departure_event = f"{service_id}_D"
     arrival_event = f"{service_id}_A"
+    
+    G.add_node(departure_event, station=stops[0]["station"], time=stops[0]["time"], demand=math.ceil(demand / capacity))
+    G.add_node(arrival_event, station=stops[1]["station"], time=stops[1]["time"], demand=-math.ceil(demand / capacity))
 
-    G.add_node(departure_event, station=stops[0]["station"], time=stops[0]["time"])
-    G.add_node(arrival_event, station=stops[1]["station"], time=stops[1]["time"])
-
-    # Agregar arco de tren
+    # Agregar arco de tren con demanda mínima y capacidad máxima
     G.add_edge(
         departure_event,
         arrival_event,
-        low = math.ceil(demand / capacity),  # Demanda mínima
+        lower=math.ceil(demand / capacity),  # Demanda mínima
         upper=max_rs,  # Máximo permitido por servicio
         cost=0  # Sin costo en arcos de tren
     )
 
-
 # 2. Agregar arcos de traspaso dentro de cada estación
-    events_by_station = {station: [] for station in stations}
-    for node, attributes in G.nodes(data=True):
-        events_by_station[attributes["station"]].append((node, attributes["time"]))
+events_by_station = {station: [] for station in stations}
+for node, attributes in G.nodes(data=True):
+    events_by_station[attributes["station"]].append((node, attributes["time"]))
 
-    for station, events in events_by_station.items():
-        # Ordenar eventos por tiempo dentro de la misma estación
-        events.sort(key=lambda x: x[1])
-        for i in range(len(events) - 1):
-            G.add_edge(
-                events[i][0],
-                events[i + 1][0],
-                lower=0,
-                upper=float('inf'),  # Sin límite superior
-                cost=0  # Sin costo en arcos de traspaso
-            )
+for station, events in events_by_station.items():
+    # Ordenar eventos por tiempo dentro de la misma estación
+    events.sort(key=lambda x: x[1])
+    for i in range(len(events) - 1):
+        G.add_edge(
+            events[i][0],
+            events[i + 1][0],
+            lower=0,
+            upper=float('inf'),  # Sin límite superior
+            cost=0  # Sin costo en arcos de traspaso
+        )
 
-# 3. Agregar arcos de trasnoche
+# 3. Agregar arcos de trasnoche con capacidad ajustada
 for station, events in events_by_station.items():
     if events:
         first_event = events[0][0]
         last_event = events[-1][0]
+        
         G.add_edge(
             last_event,
             first_event,
             lower=0,
-            upper=float('inf'),  # Sin límite superior
+            upper=1e10,  # Capacidad de trasnoche
             cost=cost_per_unit[station]  # Costo de trasnoche por unidad
         )
 
-# 4. Resolver flujo mínimo
-flow_cost, flow_dict = nx.network_simplex(G)
+# 4. Resolver flujo mínimo y calcular costos
+flow_cost, flow_dict = nx.capacity_scaling(G, demand='demand', weight='cost')
 
 # Validar conectividad del grafo
 if not nx.is_connected(G.to_undirected()):
@@ -82,7 +82,38 @@ for u, v, attributes in G.edges(data=True):
     flujo = flow_dict.get(u, {}).get(v, 0)
     print(f"{u} -> {v}: Flujo = {flujo}, Costo = {attributes['cost']}")
 
-# 6. Visualizar el grafo con Matplotlib
+# 6. Identificar estaciones recorridas y trasnoche para cada tren
+for service_id, service in data["services"].items():
+    recorrido = []
+    trasnoche_station = None
+
+    stops = service["stops"]
+    departure_event = f"{service_id}_D"
+    arrival_event = f"{service_id}_A"
+    
+    # Rastrear estaciones recorridas basadas en el flujo
+    for u, destinations in flow_dict.items():
+        if u.startswith(service_id):
+            for v, flujo in destinations.items():
+                if flujo > 0 and G.nodes[u]['station'] not in recorrido:
+                    recorrido.append(G.nodes[u]['station'])
+                if flujo > 0 and G.nodes[v]['station'] not in recorrido:
+                    recorrido.append(G.nodes[v]['station'])
+
+    # Verificar si el tren trasnocha en alguna estación
+    for u, destinations in flow_dict.items():
+        for v, flujo in destinations.items():
+            if flujo > 0 and ((u == arrival_event and v == departure_event) or (u == departure_event and v == arrival_event)):
+                trasnoche_station = G.nodes[v]['station']
+                break
+
+    print(f"\nTren {service_id} recorre las estaciones: {', '.join(recorrido)}")
+    if trasnoche_station:
+        print(f"Tren {service_id} trasnocha en la estación: {trasnoche_station}")
+    else:
+        print(f"Tren {service_id} no tiene trasnoche registrado.")
+
+# 7. Visualizar el grafo con Matplotlib
 plt.figure(figsize=(12, 8))
 
 # Posicionar nodos de acuerdo a la estación y tiempo
@@ -105,26 +136,3 @@ plt.xlabel("Tiempo")
 plt.ylabel("Estación (índice)")
 plt.grid(True)
 plt.show()
-
-# 7. Calcular la cantidad de vagones necesarios para cada arco de tren
-vagones_por_arco = {}
-for u, v, attributes in G.edges(data=True):
-    # Obtenemos el flujo en este arco
-    flujo = flow_dict.get(u, {}).get(v, 0)
-    
-    # Calculamos la cantidad de vagones, asumiendo que cada vagón tiene la capacidad especificada
-    if flujo > 0:
-        # Número de vagones necesarios = flujo total / capacidad de cada vagón
-        vagones = flujo / capacity
-        vagones_por_arco[(u, v)] = vagones
-    else:
-        vagones_por_arco[(u, v)] = 0
-
-# 8. Mostrar resultados de vagones
-print("\nCantidad de vagones por arco:")
-for (u, v), vagones in vagones_por_arco.items():
-    print(f"{u} -> {v}: {vagones} vagones")
-    demand = service["demand"][0]  # Verifica que esto no sea cero
-    print(demand)
-
-
