@@ -4,7 +4,7 @@ import json
 import math
 
 # Cargar datos del JSON
-with open("instances/toy_instance.json", "r") as file:
+with open(r"instances\retiro-tigre-semana.json", "r") as file:
     data = json.load(file)
 
 # Crear el grafo dirigido
@@ -77,12 +77,9 @@ for station, events in events_by_station.items():
 # 4. Resolver flujo mínimo y calcular costos
 flow_cost, flow_dict = nx.capacity_scaling(G, demand='demand', weight='cost')
 
-# Validar conectividad del grafo
-if not nx.is_connected(G.to_undirected()):
-    print("Advertencia: El grafo no está completamente conectado.")
 
 # 5. Mostrar resultados en texto
-print("Costo mínimo (unidades de trasnoche):", flow_cost)
+print("Costo mínimo (vagones):", flow_cost)
 print("\nFlujo por arco:")
 for u, v, attributes in G.edges(data=True):
     flujo = flow_dict.get(u, {}).get(v, 0)
