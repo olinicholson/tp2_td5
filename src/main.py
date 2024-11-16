@@ -4,7 +4,7 @@ import json
 import math
 
 # Cargar datos del JSON
-with open("instances/retiro-tigre-semana.json", "r") as file:
+with open("instances/toy_instance.json", "r") as file:
     data = json.load(file)
 
 # Crear el grafo dirigido
@@ -34,7 +34,9 @@ for service_id, service in data["services"].items():
         arrival_event,
         lower=math.ceil(demand / capacity),  # Demanda mínima
         upper=max_rs,  # Máximo permitido por servicio
-        cost=0  # Sin costo en arcos de tren
+        cost=0,  # Sin costo en arcos de tren
+        type='train',  # Tipo de arco: tren
+        color='blue'  # Color verde para los arcos de traspaso
     )
 
 # 2. Agregar arcos de traspaso dentro de cada estación
@@ -51,7 +53,9 @@ for station, events in events_by_station.items():
             events[i + 1][0],
             lower=0,
             upper=float('inf'),  # Sin límite superior
-            cost=0  # Sin costo en arcos de traspaso
+            cost=0,  # Sin costo en arcos de traspaso
+            type='transfer' , # Tipo de arco: traspaso
+            color='red'  # Color verde para los arcos de traspaso
         )
 
 # 3. Agregar arcos de trasnoche con capacidad ajustada
@@ -65,7 +69,9 @@ for station, events in events_by_station.items():
             first_event,
             lower=0,
             upper=1e10,  # Capacidad de trasnoche
-            cost=cost_per_unit[station]  # Costo de trasnoche por unidad
+            cost=cost_per_unit[station],  # Costo de trasnoche por unidad
+            type='overnight'  ,# Tipo de arco: trasnoche
+            color='green'  # Color verde para los arcos de trasnoche
         )
 
 # 4. Resolver flujo mínimo y calcular costos
@@ -100,39 +106,47 @@ for service_id, service in data["services"].items():
                 if flujo > 0 and G.nodes[v]['station'] not in recorrido:
                     recorrido.append(G.nodes[v]['station'])
 
-    # Verificar si el tren trasnocha en alguna estación
-    for u, destinations in flow_dict.items():
-        for v, flujo in destinations.items():
-            if flujo > 0 and ((u == arrival_event and v == departure_event) or (u == departure_event and v == arrival_event)):
-                trasnoche_station = G.nodes[v]['station']
-                break
 
-    print(f"\nTren {service_id} recorre las estaciones: {', '.join(recorrido)}")
-    if trasnoche_station:
-        print(f"Tren {service_id} trasnocha en la estación: {trasnoche_station}")
+
+# Dibujar circulación
+pos = {}
+for index, (node, attributes) in enumerate(G.nodes(data=True)):
+    station_idx = stations.index(attributes["station"])
+    pos[node] = (attributes["time"] + index * 10, station_idx)  # Añadir `index * 10` para desplazar los nodos horizontalmente
+
+# Dibujar nodos con un tamaño más grande y color claro
+nx.draw_networkx_nodes(G, pos, node_size=700, node_color="skyblue", alpha=0.7)
+
+# Dibujar las etiquetas de los nodos
+nx.draw_networkx_labels(G, pos, font_size=10, font_weight="bold")
+
+# Dibujar aristas con diferentes estilos para evitar superposición
+edge_data = []  # Para almacenar los datos de las aristas y luego usarlos en la tabla
+for (u, v, attributes) in G.edges(data=True):
+    color = attributes['color']
+    flow_value = flow_dict.get(u, {}).get(v, 0)
+    
+    # Configurar el estilo de la conexión
+    if color == 'green':
+        connectionstyle = 'arc3,rad=0.2'  # Curva hacia arriba para rojo
     else:
-        print(f"Tren {service_id} no tiene trasnoche registrado.")
+        connectionstyle = 'arc3,rad=0'  # Línea recta para otros colores
+    
+    # Dibujar la arista
+    nx.draw_networkx_edges(
+        G, pos, edgelist=[(u, v)], edge_color=color, width=2,
+        arrowstyle="->", arrowsize=10, alpha=1, connectionstyle=connectionstyle
+    )
 
-# 7. Visualizar el grafo con Matplotlib
-plt.figure(figsize=(12, 8))
+# Obtener el flujo para cada arista
+for (u, v, attributes) in G.edges(data=True):
+    flow_value = flow_dict.get(u, {}).get(v, 0)
+    print(f"Flujo de la arista ({u}, {v}): {flow_value} unidades")
 
-# Posicionar nodos de acuerdo a la estación y tiempo
-pos = {node: (attributes["time"], stations.index(attributes["station"]))
-       for node, attributes in G.nodes(data=True)}
+# Agregar título y etiquetas
+plt.title("Grafo de flujo de trenes ", fontsize=16)
+plt.xlabel("Tiempo (Unidades de Tiempo)", fontsize=12)
+plt.ylabel("Estación (Índice)", fontsize=12)
 
-# Dibujar nodos y etiquetas
-nx.draw_networkx_nodes(G, pos, node_size=700, node_color="lightblue")
-nx.draw_networkx_labels(G, pos, font_size=10)
-
-# Dibujar arcos con etiquetas de flujo
-nx.draw_networkx_edges(G, pos, edge_color="black", arrowstyle="->")
-edge_labels = {(u, v): f"{flow_dict.get(u, {}).get(v, 0)}"
-               for u, v in G.edges()}
-nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=8)
-
-# Configurar título y mostrar
-plt.title("Grafo de flujo con costos y flujos")
-plt.xlabel("Tiempo")
-plt.ylabel("Estación (índice)")
-plt.grid(True)
+# Mostrar el gráfico
 plt.show()

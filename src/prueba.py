@@ -25,7 +25,7 @@ def ordenar_tuplas_por_numero(lista): # Ordenar listas según tiempo
 
 
 def main_modelado_circulacion(): # Modelado de la red como circulación
-	filename = "instances/toy_instance.json"
+	filename = "instances/retiro-tigre-semana.json"
 	#filename = "instances/retiro-tigre-semana.json"
 
 	with open(filename) as json_file: # Cargo data
@@ -236,7 +236,7 @@ if __name__ == "__main__":
 
 	#---- Dataset Toy --------------
 	print('Dataset Toy')
-	main_modelado_circulacion()
+	main_modelado_cost_min(r'instances\toy_instance.json')
 	#-------------------------------
 	''' 
 	#---- Dataset Real -------
