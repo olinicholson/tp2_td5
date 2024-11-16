@@ -4,7 +4,7 @@ import json
 import math
 
 # Cargar datos del JSON
-with open(r"instances\retiro-tigre-semana.json", "r") as file:
+with open(r"instances\ejercicio4.json", "r") as file:
     data = json.load(file)
 
 # Crear el grafo dirigido

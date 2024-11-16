@@ -1,0 +1,167 @@
+{
+    "services": {
+        "3001": {
+            "stops": [
+                {"time": 295, "station": "Retiro", "type": "D"},
+                {"time": 312, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3003": {
+            "stops": [
+                {"time": 310, "station": "Retiro", "type": "D"},
+                {"time": 327, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3005": {
+            "stops": [
+                {"time": 325, "station": "Retiro", "type": "D"},
+                {"time": 342, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3007": {
+            "stops": [
+                {"time": 340, "station": "Retiro", "type": "D"},
+                {"time": 357, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3009": {
+            "stops": [
+                {"time": 355, "station": "Retiro", "type": "D"},
+                {"time": 372, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3011": {
+            "stops": [
+                {"time": 370, "station": "Retiro", "type": "D"},
+                {"time": 387, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3013": {
+            "stops": [
+                {"time": 385, "station": "Retiro", "type": "D"},
+                {"time": 402, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3015": {
+            "stops": [
+                {"time": 400, "station": "Retiro", "type": "D"},
+                {"time": 417, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3017": {
+            "stops": [
+                {"time": 415, "station": "Retiro", "type": "D"},
+                {"time": 432, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3019": {
+            "stops": [
+                {"time": 430, "station": "Retiro", "type": "D"},
+                {"time": 447, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3021": {
+            "stops": [
+                {"time": 445, "station": "Retiro", "type": "D"},
+                {"time": 462, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3023": {
+            "stops": [
+                {"time": 460, "station": "Retiro", "type": "D"},
+                {"time": 477, "station": "Tigre", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3006": {
+            "stops": [
+                {"time": 250, "station": "Tigre", "type": "D"},
+                {"time": 255, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3008": {
+            "stops": [
+                {"time": 265, "station": "Tigre", "type": "D"},
+                {"time": 270, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3010": {
+            "stops": [
+                {"time": 280, "station": "Tigre", "type": "D"},
+                {"time": 285, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3012": {
+            "stops": [
+                {"time": 295, "station": "Tigre", "type": "D"},
+                {"time": 300, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3014": {
+            "stops": [
+                {"time": 310, "station": "Tigre", "type": "D"},
+                {"time": 315, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3016": {
+            "stops": [
+                {"time": 325, "station": "Tigre", "type": "D"},
+                {"time": 330, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3018": {
+            "stops": [
+                {"time": 340, "station": "Tigre", "type": "D"},
+                {"time": 345, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3020": {
+            "stops": [
+                {"time": 355, "station": "Tigre", "type": "D"},
+                {"time": 360, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3022": {
+            "stops": [
+                {"time": 370, "station": "Tigre", "type": "D"},
+                {"time": 375, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        },
+        "3024": {
+            "stops": [
+                {"time": 385, "station": "Tigre", "type": "D"},
+                {"time": 390, "station": "Retiro", "type": "A"}
+            ],
+            "demand": [500]
+        }
+    },
+    "stations": ["Tigre", "Retiro"],
+    "cost_per_unit": {
+        "Tigre": 1.0,
+        "Retiro": 1.0
+    },
+    "rs_info": {
+        "capacity": 100,
+        "max_rs": 25
+    }
+}
