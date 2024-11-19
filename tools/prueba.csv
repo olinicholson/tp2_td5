@@ -1,0 +1,17 @@
+service id,hora origen,origen,tipo origen,hora destino,destino,tipo destino,demanda (pax)
+2001,350,Victoria,D,513,Los Cardales,estacion,400
+2005,812,Victoria,D,935,Los Cardales,estacion,400
+2007,1010,Victoria,D,1135,Los Cardales,estacion,400
+2009,1210,Victoria,D,1335,Los Cardales,estacion,400
+2011,1414,Victoria,D,1539,Los Cardales,estacion,400
+2013,1621,Victoria,D,1746,Los Cardales,estacion,400
+2015,1746,Victoria,D,1911,Los Cardales,estacion,400
+2017,1955,Victoria,D,2120,Los Cardales,estacion,400
+2002,656,Los Cardales,A,704,Victoria,estacion,400
+2006,1051,Los Cardales,A,1118,Victoria,estacion,400
+2008,1251,Los Cardales,A,1318,Victoria,estacion,400
+2010,1455,Los Cardales,A,1522,Victoria,estacion,400
+2012,1702,Los Cardales,A,1729,Victoria,estacion,400
+2014,1915,Los Cardales,A,1942,Victoria,estacion,400
+2016,2036,Los Cardales,A,2103,Victoria,estacion,400
+2018,2236,Los Cardales,A,2303,Victoria,estacion,400
