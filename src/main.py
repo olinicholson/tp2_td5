@@ -150,9 +150,3 @@ circulacion(r"instances\prueba.json")
 
 
 # Experientacion
-
-# --- Demandas
-
-# ----- Demanda baja:
-
-circulacion()
