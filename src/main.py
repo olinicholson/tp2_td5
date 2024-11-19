@@ -136,10 +136,6 @@ def circulacion(path):
             arrowstyle="->", arrowsize=10, alpha=1, connectionstyle=connectionstyle
         )
 
-    # Obtener el flujo para cada arista
-    for (u, v, attributes) in G.edges(data=True):
-        flow_value = flow_dict.get(u, {}).get(v, 0)
-        print(f"Flujo de la arista ({u}, {v}): {flow_value} unidades")
 
     # Agregar título y etiquetas
     plt.title("Grafo de flujo de trenes ", fontsize=16)
@@ -151,3 +147,12 @@ def circulacion(path):
 
 circulacion(r"instances\prueba.json")
 
+
+
+# Experientacion
+
+# --- Demandas
+
+# ----- Demanda baja:
+
+circulacion()
