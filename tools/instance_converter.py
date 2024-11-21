@@ -5,11 +5,11 @@ import pprint
 
 instance = {}
 instance['services'] = {}
-instance['stations'] = ['Victoria','Los Cardales']
-instance['cost_per_unit'] = {'Victoria' : 1.0, 'Los Cardales' : 1.0}
+instance['stations'] = ['Retiro','Tigre']
+instance['cost_per_unit'] = {'Retiro' : 1.0, 'Tigre' : 1.0}
 
 
-filename = 'tools/prueba'
+filename = 'instances/experimentacion/frecuencia/frecuencia_alta'
 # Open the CSV file in read mode
 with open(filename + '.csv', 'r') as csvfile:
     # Create a CSV reader object
@@ -29,8 +29,8 @@ with open(filename + '.csv', 'r') as csvfile:
 
 
 
-instance['rs_info'] = {'capacity': 100, 'max_rs': 6}
-instance['rs_info'] = {'capacity': 100, 'max_rs': 25}
+instance['rs_info'] = {'capacity': 400, 'max_rs': 1}
+instance['rs_info'] = {'capacity': 200, 'max_rs': 6}
 #pprint.pprint(instance)
 
 with open(filename + '.json', 'w') as json_file:

@@ -1,0 +1,186 @@
+{
+    "services": {
+        "1": {
+            "stops": [
+                {
+                    "time": 0,
+                    "station": "Retiro",
+                    "type": "D"
+                },
+                {
+                    "time": 50,
+                    "station": "Tigre",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "2": {
+            "stops": [
+                {
+                    "time": 100,
+                    "station": "Retiro",
+                    "type": "D"
+                },
+                {
+                    "time": 150,
+                    "station": "Tigre",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "3": {
+            "stops": [
+                {
+                    "time": 200,
+                    "station": "Retiro",
+                    "type": "D"
+                },
+                {
+                    "time": 250,
+                    "station": "Tigre",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "4": {
+            "stops": [
+                {
+                    "time": 300,
+                    "station": "Retiro",
+                    "type": "D"
+                },
+                {
+                    "time": 350,
+                    "station": "Tigre",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                50
+            ]
+        },
+        "5": {
+            "stops": [
+                {
+                    "time": 400,
+                    "station": "Retiro",
+                    "type": "D"
+                },
+                {
+                    "time": 450,
+                    "station": "Tigre",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                50
+            ]
+        },
+        "6": {
+            "stops": [
+                {
+                    "time": 50,
+                    "station": "Tigre",
+                    "type": "D"
+                },
+                {
+                    "time": 100,
+                    "station": "Retiro",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "7": {
+            "stops": [
+                {
+                    "time": 150,
+                    "station": "Tigre",
+                    "type": "D"
+                },
+                {
+                    "time": 200,
+                    "station": "Retiro",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "8": {
+            "stops": [
+                {
+                    "time": 250,
+                    "station": "Tigre",
+                    "type": "D"
+                },
+                {
+                    "time": 300,
+                    "station": "Retiro",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                500
+            ]
+        },
+        "9": {
+            "stops": [
+                {
+                    "time": 350,
+                    "station": "Tigre",
+                    "type": "D"
+                },
+                {
+                    "time": 400,
+                    "station": "Retiro",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                50
+            ]
+        },
+        "10": {
+            "stops": [
+                {
+                    "time": 450,
+                    "station": "Tigre",
+                    "type": "D"
+                },
+                {
+                    "time": 500,
+                    "station": "Retiro",
+                    "type": "A"
+                }
+            ],
+            "demand": [
+                50
+            ]
+        }
+    },
+    "stations": [
+        "Victoria",
+        "Los Cardales"
+    ],
+    "cost_per_unit": {
+        "Victoria": 1.0,
+        "Los Cardales": 1.0
+    },
+    "rs_info": {
+        "capacity": 100,
+        "max_rs": 25
+    }
+}
